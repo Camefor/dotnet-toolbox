@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Threading;
 using System.Web;
 
-namespace Camefor.Tools.Util
+namespace Camefor.Tools.IO
 {
     /// <summary>
     /// 描   述  ： 文件下载类                         

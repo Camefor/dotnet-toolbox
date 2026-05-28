@@ -4,8 +4,9 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Camefor.Tools.Xml;
 
-namespace Camefor.Tools.Util
+namespace Camefor.Tools.Extensions
 {
 
     /// <summary>

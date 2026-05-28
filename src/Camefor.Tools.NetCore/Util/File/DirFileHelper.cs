@@ -5,7 +5,7 @@ using System.Data;
 using System.Web;
 using System.Reflection;
 
-namespace Camefor.Tools.Util
+namespace Camefor.Tools.IO
 {
     /// <summary>
     /// 描   述  ： 文件夹文件操作类                         
@@ -300,7 +300,7 @@ namespace Camefor.Tools.Util
         /// <returns></returns>
         public static bool IsExistFileEx(string filePath)
         {
-            string rootPath = Assembly.GetExecutingAssembly().CodeBase.Replace("/bin/Camefor.Tools.Util.DLL", "").Replace("file:///", "");
+            string rootPath = Assembly.GetExecutingAssembly().CodeBase.Replace("/bin/Camefor.Tools.DLL", "").Replace("file:///", "");
             return File.Exists(rootPath + filePath);
         }
         #endregion

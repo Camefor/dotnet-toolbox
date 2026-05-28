@@ -5,7 +5,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
-namespace Camefor.Tools.Util.Web
+namespace Camefor.Tools.Web
 {
     /// <summary>
     /// 描   述  ： Http请求方法                         

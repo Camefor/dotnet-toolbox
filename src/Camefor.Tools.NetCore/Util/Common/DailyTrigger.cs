@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Camefor.Tools.Util
+namespace Camefor.Tools.Timing
 {
     /// <summary>
     /// 描   述  ： to trigger an event at a specific time                         

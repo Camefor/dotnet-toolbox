@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
-namespace Camefor.Tools.Util
+namespace Camefor.Tools.Security
 {
     /// <summary>
     /// 描   述  ：                          

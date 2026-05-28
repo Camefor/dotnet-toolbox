@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Camefor.Tools.Util
+namespace Camefor.Tools.Collections
 {
     /// <summary>
     /// 

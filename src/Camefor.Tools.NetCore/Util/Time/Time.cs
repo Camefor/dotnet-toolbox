@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
+using Camefor.Tools.Extensions;
 
-namespace Camefor.Tools.Util
+namespace Camefor.Tools.Timing
 {
     /// <summary>
     /// 描   述  ： 时间操作                         

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Camefor.Tools.Util
+namespace Camefor.Tools.Extensions
 {
     /// <summary>
     /// 描   述  ： 类型转换扩展                         

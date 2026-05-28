@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Camefor.Tools.Util
+namespace Camefor.Tools.Collections
 {
     /// <summary>
     /// 提供任何类型的分页接口

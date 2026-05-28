@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Camefor.Tools.Util
+namespace Camefor.Tools.Collections
 {
     /// <summary>
     /// 描   述  ： 分页参数                         

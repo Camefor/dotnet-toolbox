@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Reflection;
 
-namespace Camefor.Tools.Util
+namespace Camefor.Tools.Reflection
 {
     /// <summary>
     /// 描   述  ： 获取实体类Attribute自定义属性                          

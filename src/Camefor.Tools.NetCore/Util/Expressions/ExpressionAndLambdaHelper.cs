@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace Camefor.Tools.Util
+namespace Camefor.Tools.Linq
 {
     public class ExpressionAndLambdaHelper
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Camefor.Tools.Util
+namespace Camefor.Tools.Collections
 {
     /// <summary>
     /// 提供数据的分页，<see cref="IPagedList{T}"/>的默认实现

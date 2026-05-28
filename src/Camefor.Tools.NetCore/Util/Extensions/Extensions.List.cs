@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Camefor.Tools.Collections;
 
-namespace Camefor.Tools.Util
+namespace Camefor.Tools.Extensions
 {
     /// <summary>
     /// 描   述  ：  List扩展                        

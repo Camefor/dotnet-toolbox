@@ -3,7 +3,7 @@ using System.Net.Sockets;
 using System.Web;
 using System;
 
-namespace Camefor.Tools.Util.Web
+namespace Camefor.Tools.Web
 {
     /// <summary>
     /// 描   述  ：网络操作                          

@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using Camefor.Tools.Extensions;
 
-namespace Camefor.Tools.Util
+namespace Camefor.Tools.Text
 {
     /// <summary>
     /// 描   述  ： 字符串工具方法                         

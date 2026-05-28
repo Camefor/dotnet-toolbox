@@ -1,4 +1,4 @@
-﻿namespace Camefor.Tools.Util
+﻿namespace Camefor.Tools.Excel
 {
     /// <summary>
     /// 描   述  ： 模板数据模型                          

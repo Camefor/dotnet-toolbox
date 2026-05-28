@@ -14,11 +14,10 @@
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<AssemblyTitle>Camefor.Tools</AssemblyTitle>
 
-		<Version>1.0.2</Version>
+		<Version>1.0.3</Version>
 
 		<PackageReleaseNotes>
-			1. 上了一趟厕所,回来优化了一下命名空间定义。
-			2. 测试啊。
+			1. 进行了一些更新。
 		</PackageReleaseNotes>
 		
 	</PropertyGroup>

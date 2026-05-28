@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 
-namespace Camefor.Tools.Util
+namespace Camefor.Tools.Xml
 {
 
     /// <summary>

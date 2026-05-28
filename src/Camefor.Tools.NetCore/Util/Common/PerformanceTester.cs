@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace Camefor.Tools.Util
+namespace Camefor.Tools.Common
 {
     /// <summary>
     /// 描   述  ： 性能测试 https://stackoverflow.com/questions/13681664/helper-class-for-performance-tests-using-stopwatch-class#

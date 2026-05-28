@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Camefor.Tools.Util
+namespace Camefor.Tools.Common
 {
     /// <summary>
     /// 描   述  ：常用公共类                          

@@ -1,8 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+using Camefor.Tools.Extensions;
 
-namespace Camefor.Tools.Util.Web
+namespace Camefor.Tools.Web
 {
 
     /// <summary>

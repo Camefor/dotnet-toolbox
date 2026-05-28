@@ -4,7 +4,7 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace Camefor.Tools.Util.Common
+namespace Camefor.Tools.Common
 {
     /// <summary>
     /// 描   述  ： 对象拷贝通用方法                     

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Camefor.Tools.Util.Gps
+namespace Camefor.Tools.Gps
 {
     /// <summary>
     /// 提供百度坐标系(bd-09)、火星坐标系(国测局坐标系、gcj02)、WGS84坐标系直接的坐标互转，也提供了解析百度地址的方法的c#版本

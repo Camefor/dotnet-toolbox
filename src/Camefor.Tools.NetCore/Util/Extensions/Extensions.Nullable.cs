@@ -4,7 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 
-namespace Camefor.Tools.Util
+namespace Camefor.Tools.Extensions
 {
     /// <summary>
     /// 描   述  ： 扩展.可空类型                         
