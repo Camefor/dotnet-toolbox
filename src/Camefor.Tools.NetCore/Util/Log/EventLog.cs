@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace Camefor.Tools.NetCore.Util.Log
+namespace Camefor.Tools.Util.Log
 {
     /// <summary>
     /// 描   述  ：                          

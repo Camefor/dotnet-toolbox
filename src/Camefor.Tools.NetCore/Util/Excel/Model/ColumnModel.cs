@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace Camefor.Tools.NetCore.Util
+namespace Camefor.Tools.Util
 {
     /// <summary>
     /// 描   述  ： Excel导入导出列设置模型                    

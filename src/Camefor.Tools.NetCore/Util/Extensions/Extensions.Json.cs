@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 
-namespace Camefor.Tools.NetCore.Util
+namespace Camefor.Tools.Util
 {
     /// <summary>
     /// 描   述  ： 扩展.json序列反序列化                         

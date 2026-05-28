@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 
-namespace Camefor.Tools.NetCore.Util
+namespace Camefor.Tools.Util
 {
     /// <summary>
     /// 描   述  ： Excel导入导出设置                      

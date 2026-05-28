@@ -1,4 +1,4 @@
-﻿namespace Camefor.Tools.NetCore.Util
+﻿namespace Camefor.Tools.Util
 {
     /// <summary>
     /// 描   述  ： 模板数据模型                          

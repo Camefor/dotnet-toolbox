@@ -3,7 +3,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Camefor.Tools.NetCore.Util
+namespace Camefor.Tools.Util
 {
     public static class StringGenerator
     {

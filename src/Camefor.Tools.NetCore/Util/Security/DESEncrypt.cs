@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Camefor.Tools.NetCore.Util
+namespace Camefor.Tools.Util
 {
     /// <summary>
     /// 描   述  ：加密、解密帮助类                          

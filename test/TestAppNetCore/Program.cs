@@ -1,6 +1,4 @@
-﻿using Camefor.Tools.NetCore.Util.Web;
-using Camefor.Tools.NetCore.Util.Log;
-using System;
+﻿using System;
 using System.Threading.Tasks;
 
 namespace TestAppNetCore

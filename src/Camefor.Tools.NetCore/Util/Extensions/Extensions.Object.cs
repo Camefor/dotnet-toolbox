@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Camefor.Tools.NetCore.Util
+namespace Camefor.Tools.Util
 {
 
     /// <summary>

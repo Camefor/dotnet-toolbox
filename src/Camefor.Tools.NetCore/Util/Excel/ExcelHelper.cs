@@ -10,7 +10,7 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Camefor.Tools.NetCore.Util
+namespace Camefor.Tools.Util
 {
     /// <summary>
     /// 描   述  ： NPOI Excel DataTable操作类                        

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Camefor.Tools.NetCore.Util.Common
+namespace Camefor.Tools.Util.Common
 {
     /// <summary>
     /// 异步锁

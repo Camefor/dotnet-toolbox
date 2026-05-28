@@ -3,12 +3,28 @@
 		<TargetFrameworks>net8.0;netstandard2.0</TargetFrameworks>
 		<Authors>Rhys Wang</Authors>
 		<Company>Rhys Wang</Company>
-		<Version>1.0.0</Version>
 
+		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+		<PackageId>Camefor.Tools</PackageId>
+		<Description>Rhys小笨的代码工具库，包含 C# 日常开发中常用的辅助类、扩展方法等。</Description>
+		<Tags>dotnet;csharp;utils;extensions;tools</Tags>
+		<RepositoryUrl>https://github.com/Camefor/dotnet-toolbox</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<AssemblyTitle>Camefor.Tools</AssemblyTitle>
+
+		<Version>1.0.2</Version>
+
+		<PackageReleaseNotes>
+			1. 上了一趟厕所,回来优化了一下命名空间定义。
+			2. 测试啊。
+		</PackageReleaseNotes>
+		
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
 		<PackageReference Include="NPOI" Version="2.5.4" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-	</ItemGroup>
+		<None Include="..\..\README.md" Pack="true" PackagePath="\" />	</ItemGroup>
 </Project>

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 
-namespace Camefor.Tools.NetCore.Util.Log
+namespace Camefor.Tools.Util.Log
 {
     internal static class FastConsole
     {

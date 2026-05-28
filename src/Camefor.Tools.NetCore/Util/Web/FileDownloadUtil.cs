@@ -2,7 +2,7 @@
 using System.IO;
 using System.Net;
 
-namespace Camefor.Tools.NetCore.Util.Web
+namespace Camefor.Tools.Util.Web
 {
 
     /// <summary>
