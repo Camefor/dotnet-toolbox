@@ -1,0 +1,39 @@
+name: Publish to NuGet
+
+# 触发条件：当推送以 'v' 开头的 tag 时（例如 v1.0.2）才会执行
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest # 在最新的 Linux 云服务器上运行
+
+    steps:
+    # 1. 检出代码
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    # 2. 安装 .NET 8 SDK
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x' # 如果以后升级到 .NET 9，改这里就行
+
+    # 3. 还原依赖 (请确保路径和电脑上的实际路径一致)
+    - name: Restore dependencies
+      run: dotnet restore src/Camefor.Tools.NetCore/Camefor.Tools.NetCore.csproj
+
+    # 4. 编译项目 (Release 模式)
+    - name: Build project
+      run: dotnet build src/Camefor.Tools.NetCore/Camefor.Tools.NetCore.csproj --configuration Release --no-restore
+
+    # 5. 打包成 .nupkg，并统一放到一个叫 nupkg 的临时文件夹里
+    - name: Pack package
+      run: dotnet pack src/Camefor.Tools.NetCore/Camefor.Tools.NetCore.csproj --configuration Release --no-build --output ./nupkg
+
+    # 6. 推送到 NuGet 服务器
+    - name: Push to NuGet
+      # 从保险箱读取 NUGET_API_KEY。--skip-duplicate 防止重复推送导致的报错
+      run: dotnet nuget push ./nupkg/*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
