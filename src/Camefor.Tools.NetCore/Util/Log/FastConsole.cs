@@ -6,7 +6,7 @@ using System.Threading;
 
 namespace Camefor.Tools.Log
 {
-    internal static class FastConsole
+    public static class FastConsole
     {
         private const int INTERVAL = 5; // 间隔多少毫秒再次检测是否有新文本
         private const int MAX_INTERVAL = 200; // 间隔多少毫秒后强制输出

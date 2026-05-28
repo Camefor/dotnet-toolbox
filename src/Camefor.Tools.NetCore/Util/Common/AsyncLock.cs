@@ -53,7 +53,7 @@ namespace Camefor.Tools.Common
     {
         private readonly AsyncLock _asyncLock;
 
-        internal Release(AsyncLock asyncLock)
+        public Release(AsyncLock asyncLock)
         {
             _asyncLock = asyncLock;
         }
