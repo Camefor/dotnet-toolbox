@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Camefor.Tools.NetCore", "Camefor.Tools.NetCore.csproj", "{011103C8-FFAF-6EA8-16E6-74D7927774EF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{011103C8-FFAF-6EA8-16E6-74D7927774EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{011103C8-FFAF-6EA8-16E6-74D7927774EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{011103C8-FFAF-6EA8-16E6-74D7927774EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{011103C8-FFAF-6EA8-16E6-74D7927774EF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C40F1B05-F204-4398-9EB2-1163B5820364}
+	EndGlobalSection
+EndGlobal
