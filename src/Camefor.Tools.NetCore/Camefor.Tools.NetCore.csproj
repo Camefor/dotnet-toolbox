@@ -14,10 +14,10 @@
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<AssemblyTitle>Camefor.Tools</AssemblyTitle>
 
-		<Version>1.0.4</Version>
+		<Version>1.0.5</Version>
 
 		<PackageReleaseNotes>
-			1. 进行了一些更新。
+			1. 增加特性内存缓存 (Cache)。
 		</PackageReleaseNotes>
 		
 	</PropertyGroup>
