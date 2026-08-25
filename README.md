@@ -1,4 +1,4 @@
-# Camefor.Tools
+﻿# Camefor.Tools
 
 小笨的 .NET 代码工具库 —— 一个实用的 C# 工具集合，涵盖类型转换、集合操作、文件处理、Excel 读写、加密、GPS 坐标转换等常用功能。
 
@@ -246,6 +246,27 @@ test/TestAppNetCore/      # 测试项目
 | Newtonsoft.Json | 13.0.3 | JSON 序列化 |
 | NPOI | 2.5.4 | Excel 文件读写 |
 | Microsoft.AspNetCore.Http.Abstractions | 2.2.0 | ASP.NET Core HTTP 抽象 |
+
+### 特性内存缓存 (Cache)
+
+通过接口代理为方法增加进程内缓存，支持同步返回值、`Task<T>` 和 `ValueTask<T>`。缓存键仅保存 SHA-256 摘要，不会在缓存容器中保留方法参数明文。
+
+```csharp
+using Camefor.Tools.Cache;
+
+public interface IDataProvider
+{
+    [MemoryCache(expirationSeconds: 60)]
+    Task<string> GetAsync(string id);
+}
+
+IDataProvider provider = MemoryCacheProxy.Create<IDataProvider>(new DataProvider());
+string value = await provider.GetAsync("sample-id");
+```
+
+默认不缓存 `null`、`0`、`false` 等默认值；如需缓存，可设置 `cacheDefaultValues: true`。不参与缓存键计算的参数可标记 `[MemoryCacheKeyIgnore]`。同一缓存键并发未命中时只执行一次真实方法，异常和取消结果不会写入缓存。
+
+> 特性应标在接口方法或实现方法上。当前代理仅支持接口，不支持 `void`、非泛型 `Task` 以及包含 `ref` / `out` 参数的方法。
 
 ## License
 
