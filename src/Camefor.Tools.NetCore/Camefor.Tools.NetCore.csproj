@@ -14,7 +14,7 @@
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<AssemblyTitle>Camefor.Tools</AssemblyTitle>
 
-		<Version>1.0.5</Version>
+		<Version>1.0.6</Version>
 
 		<PackageReleaseNotes>
 			1. 增加特性内存缓存 (Cache)。
