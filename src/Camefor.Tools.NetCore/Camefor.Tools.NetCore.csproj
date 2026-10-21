@@ -14,15 +14,19 @@
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<AssemblyTitle>Camefor.Tools</AssemblyTitle>
 
-		<Version>1.0.6</Version>
+		<Version>1.0.7</Version>
 
 		<PackageReleaseNotes>
 			1. 增加特性内存缓存 (Cache)。
+			2. 增加缓存启动预热与后台定时刷新服务。
 		</PackageReleaseNotes>
 		
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
 		<PackageReference Include="NPOI" Version="2.5.4" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<None Include="..\..\README.md" Pack="true" PackagePath="\" />	</ItemGroup>

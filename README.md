@@ -221,6 +221,7 @@ FastConsole.WriteException(ex);        // 异常详情
 src/Camefor.Tools/
 ├── Util/
 │   ├── Attributes/       # 特性与枚举扩展
+│   ├── Cache/            # 特性内存缓存、启动预热与后台定时刷新
 │   ├── Collections/      # 泛型分页集合
 │   ├── Common/           # 通用工具（异步锁、深拷贝、性能测试、定时触发）
 │   ├── Excel/            # Excel 导入导出（NPOI）
@@ -246,6 +247,9 @@ test/TestAppNetCore/      # 测试项目
 | Newtonsoft.Json | 13.0.3 | JSON 序列化 |
 | NPOI | 2.5.4 | Excel 文件读写 |
 | Microsoft.AspNetCore.Http.Abstractions | 2.2.0 | ASP.NET Core HTTP 抽象 |
+| Microsoft.Extensions.DependencyInjection.Abstractions | 8.0.0 | 缓存代理依赖注入注册 |
+| Microsoft.Extensions.Hosting.Abstractions | 8.0.0 | 预热与后台定时刷新宿主服务 |
+| Microsoft.Extensions.Logging.Abstractions | 8.0.0 | 服务日志抽象 |
 
 ### 特性内存缓存 (Cache)
 
@@ -267,6 +271,54 @@ string value = await provider.GetAsync("sample-id");
 默认不缓存 `null`、`0`、`false` 等默认值；如需缓存，可设置 `cacheDefaultValues: true`。不参与缓存键计算的参数可标记 `[MemoryCacheKeyIgnore]`。同一缓存键并发未命中时只执行一次真实方法，异常和取消结果不会写入缓存。
 
 > 特性应标在接口方法或实现方法上。当前代理仅支持接口，不支持 `void`、非泛型 `Task` 以及包含 `ref` / `out` 参数的方法。
+
+#### 启动预热与后台定时刷新
+
+为无参缓存方法配置 `Warmup` 与 `RefreshSeconds` 后，即可启用预热和定时刷新：
+
+```csharp
+public interface IDataProvider
+{
+    [MemoryCache(expirationSeconds: 1800, Warmup = true, RefreshSeconds = 900, Priority = 0, Critical = true)]
+    Task<Dictionary<string, Item>> GetAllAsync();
+}
+
+// ASP.NET Core / Generic Host：一次注册即可，预热/刷新宿主服务会自动装配
+builder.Services.AddMemoryCacheProxy<IDataProvider, DataProvider>();
+```
+
+`AddMemoryCacheProxy` 会自动调用 `AddMemoryCacheProxyFramework`，注册共享缓存容器、目标注册表、就绪状态，以及代理初始化、启动预热、后台定时刷新三个宿主服务，因此不需要再单独注册。预热按 `Priority` 升序执行，同优先级并发、不同优先级串行；`Critical = true` 的目标预热失败会终止启动。刷新服务为每个目标启动独立循环，启动时随机错峰 0~10 秒，并等待预热完成后再开始。
+
+> 类库无法自动向宿主注入服务，因此宿主必须至少调用一次 `AddMemoryCacheProxy`（或手动启动预热/刷新服务）。除此之外的装配由框架自行完成，避免遗漏。
+
+非宿主环境可以直接手动创建：
+
+```csharp
+var store = new MemoryCacheStore();
+var registry = new MemoryCacheRegistry();
+var readiness = new MemoryCacheReadinessState();
+var provider = MemoryCacheProxy.Create<IDataProvider>(new DataProvider(), store, registry);
+
+var warmup = new MemoryCacheWarmupHostedService(registry, readiness);
+await warmup.WarmupAsync();
+
+using (var refresh = new MemoryCacheRefreshBackgroundService(registry, readiness))
+{
+    await refresh.StartAsync(CancellationToken.None);
+    // ...
+    await refresh.StopAsync(CancellationToken.None);
+}
+```
+
+约束与行为：
+
+- 预热/刷新仅支持无参方法，有参或泛型方法在创建代理时会抛出 `InvalidOperationException`；有参场景建议采用“外层有参 + 内层无参字典”模式。
+- 手动调用 `MemoryCacheProxy.Create(target)` 时，如果方法配置了 `Warmup`/`RefreshSeconds` 却没有传入 `MemoryCacheRegistry`，创建代理会立即抛出 `InvalidOperationException`，避免配置被静默忽略。
+- `RefreshSeconds` 应小于 `ExpirationSeconds`，否则会出现缓存到期后的失效窗口，刷新服务启动时会输出警告。
+- 刷新采用“先移除旧值，再调用方法回源”；回源失败时缓存保持为空，等待下一次调用懒加载或下一次刷新。
+- 不需要自动预热/刷新的方法可标记 `[MemoryCacheIgnore]`。
+- DI 注册的缓存代理为单例，实现类型及其依赖不要使用 Scoped 服务。
+- `MemoryCacheReadinessState.IsReady` 可用于健康检查，预热完成前返回未就绪。
 
 ## License
 

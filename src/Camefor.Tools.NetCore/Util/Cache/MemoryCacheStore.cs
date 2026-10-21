@@ -48,6 +48,22 @@ namespace Camefor.Tools.Cache
         }
 
         /// <summary>
+        /// 移除指定的缓存项。
+        /// </summary>
+        /// <param name="key">缓存键。</param>
+        /// <returns>成功移除返回 true；缓存项不存在返回 false。</returns>
+        public bool Remove(string key)
+        {
+            if (key == null)
+            {
+                throw new ArgumentNullException(nameof(key));
+            }
+
+            ThrowIfDisposed();
+            return _entries.TryRemove(key, out _);
+        }
+
+        /// <summary>
         /// 释放当前缓存容器使用的清理计时器并清空缓存。
         /// </summary>
         public void Dispose()

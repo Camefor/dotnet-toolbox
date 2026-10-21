@@ -22,7 +22,28 @@ namespace Camefor.Tools.Cache
         /// <param name="target">真实的接口实现对象。</param>
         /// <param name="cacheStore">可选的缓存容器；不传时使用全局共享容器。</param>
         /// <returns>应用了特性缓存行为的接口代理。</returns>
+        /// <remarks>
+        /// 方法配置了 <see cref="MemoryCacheAttribute.Warmup"/> 或 <see cref="MemoryCacheAttribute.RefreshSeconds"/> 时，
+        /// 必须使用带 <see cref="MemoryCacheRegistry"/> 参数的重载，否则创建代理会抛出 <see cref="InvalidOperationException"/>。
+        /// </remarks>
         public static TService Create<TService>(TService target, MemoryCacheStore cacheStore = null)
+            where TService : class
+        {
+            return Create(target, cacheStore, null);
+        }
+
+        /// <summary>
+        /// 为接口实现创建内存缓存代理，并把参与预热/定时刷新的方法注册到指定注册表。
+        /// </summary>
+        /// <typeparam name="TService">服务接口类型。</typeparam>
+        /// <param name="target">真实的接口实现对象。</param>
+        /// <param name="cacheStore">可选的缓存容器；不传时使用全局共享容器。</param>
+        /// <param name="registry">可选的缓存目标注册表。</param>
+        /// <returns>应用了特性缓存行为的接口代理。</returns>
+        public static TService Create<TService>(
+            TService target,
+            MemoryCacheStore cacheStore,
+            MemoryCacheRegistry registry)
             where TService : class
         {
             if (target == null)
@@ -36,7 +57,9 @@ namespace Camefor.Tools.Cache
             }
 
             var proxy = DispatchProxy.Create<TService, MemoryCacheDispatchProxy<TService>>();
-            ((MemoryCacheDispatchProxy<TService>)(object)proxy).Initialize(target, cacheStore ?? MemoryCacheStore.Shared);
+            var dispatchProxy = (MemoryCacheDispatchProxy<TService>)(object)proxy;
+            dispatchProxy.Initialize(target, cacheStore ?? MemoryCacheStore.Shared, proxy);
+            dispatchProxy.RegisterTargets(registry);
             return proxy;
         }
     }
@@ -50,11 +73,109 @@ namespace Camefor.Tools.Cache
             new ConcurrentDictionary<MethodInfo, MethodCacheMetadata>();
         private TService _target;
         private MemoryCacheStore _cacheStore;
+        private object _proxy;
 
-        internal void Initialize(TService target, MemoryCacheStore cacheStore)
+        internal void Initialize(TService target, MemoryCacheStore cacheStore, object proxy)
         {
             _target = target;
             _cacheStore = cacheStore;
+            _proxy = proxy;
+        }
+
+        private bool HasWarmupOrRefreshConfiguration()
+        {
+            foreach (var interfaceMethod in typeof(TService).GetTypeInfo().GetMethods(
+                BindingFlags.Public | BindingFlags.Instance))
+            {
+                if (IsWarmupOrRefresh(interfaceMethod.GetCustomAttribute<MemoryCacheAttribute>(true)))
+                {
+                    return true;
+                }
+            }
+
+            foreach (var implementationMethod in _target.GetType().GetTypeInfo().GetMethods(
+                BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
+            {
+                if (IsWarmupOrRefresh(implementationMethod.GetCustomAttribute<MemoryCacheAttribute>(true)))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static bool IsWarmupOrRefresh(MemoryCacheAttribute attribute)
+        {
+            return attribute != null && (attribute.Warmup || attribute.RefreshSeconds > 0);
+        }
+
+        internal void RegisterTargets(MemoryCacheRegistry registry)
+        {
+            // 先做一次轻量扫描，避免普通缓存代理在创建时解析全部接口映射。
+            if (!HasWarmupOrRefreshConfiguration())
+            {
+                return;
+            }
+
+            var interfaceMethods = typeof(TService).GetTypeInfo().GetMethods(
+                BindingFlags.Public | BindingFlags.Instance);
+
+            foreach (var interfaceMethod in interfaceMethods)
+            {
+                var metadata = _methodMetadata.GetOrAdd(interfaceMethod, CreateMethodMetadata);
+                var cacheAttribute = metadata.CacheAttribute;
+                if (cacheAttribute == null ||
+                    (!cacheAttribute.Warmup && cacheAttribute.RefreshSeconds <= 0))
+                {
+                    continue;
+                }
+
+                if (interfaceMethod.GetCustomAttribute<MemoryCacheIgnoreAttribute>(true) != null ||
+                    metadata.TargetMethod.GetCustomAttribute<MemoryCacheIgnoreAttribute>(true) != null)
+                {
+                    continue;
+                }
+
+                if (registry == null)
+                {
+                    throw new InvalidOperationException(string.Concat(
+                        "检测到 ", typeof(TService).FullName, ".", interfaceMethod.Name,
+                        " 配置了预热/定时刷新，但创建代理时没有提供 MemoryCacheRegistry。",
+                        "请使用依赖注入注册 AddMemoryCacheProxy<TService, TImplementation>()，",
+                        "或改用 MemoryCacheProxy.Create(target, cacheStore, registry) 并启动预热/刷新服务；",
+                        "不需要自动刷新的方法请移除 Warmup/RefreshSeconds 配置或标记 [MemoryCacheIgnore]。"));
+                }
+
+                if (metadata.TargetMethod.IsGenericMethodDefinition)
+                {
+                    throw new InvalidOperationException(string.Concat(
+                        "[MemoryCache(Warmup/RefreshSeconds)] 不支持泛型方法：",
+                        typeof(TService).FullName, ".", interfaceMethod.Name, "。"));
+                }
+
+                if (metadata.Parameters.Length > 0)
+                {
+                    throw new InvalidOperationException(string.Concat(
+                        "[MemoryCache(Warmup/RefreshSeconds)] 不支持有参方法：",
+                        typeof(TService).FullName, ".", interfaceMethod.Name,
+                        "。请把 [MemoryCache] 挂在无参方法上，由有参方法内部调用该无参方法。"));
+                }
+
+                EnsureCacheable(metadata.TargetMethod);
+
+                var cacheKey = BuildCacheKey(metadata, Array.Empty<object>());
+                var method = interfaceMethod;
+                var proxy = _proxy;
+                registry.Add(new MemoryCacheTarget(
+                    typeof(TService),
+                    _target.GetType(),
+                    method,
+                    cacheAttribute,
+                    cacheKey,
+                    _cacheStore,
+                    cancellationToken => MemoryCacheInvoker.InvokeAsync(proxy, method, cancellationToken)));
+            }
         }
 
         protected override object Invoke(MethodInfo targetMethod, object[] args)

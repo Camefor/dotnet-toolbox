@@ -22,7 +22,9 @@ namespace TestAppNetCore
                 await VerifyExceptionsAreNotCachedAsync(provider, implementation).ConfigureAwait(false);
             }
 
-            Console.WriteLine("Memory cache proxy checks passed.");
+            await MemoryCachePrewarmTests.RunAsync().ConfigureAwait(false);
+
+            Console.WriteLine("Memory cache checks passed.");
         }
 
         private static async Task VerifyConcurrentAsyncCallsAsync(
