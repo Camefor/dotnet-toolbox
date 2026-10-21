@@ -15,6 +15,18 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v4
 
+    # 校验 tag 版本与项目 <Version> 一致，避免重复版本被 --skip-duplicate 静默跳过
+    - name: Verify tag matches project version
+      run: |
+        TAG_VERSION="${GITHUB_REF_NAME#v}"
+        PROJECT_VERSION=$(grep -o '<Version>[^<]*' src/Camefor.Tools.NetCore/Camefor.Tools.NetCore.csproj | head -n 1 | sed 's/<Version>//')
+        echo "Tag version: $TAG_VERSION"
+        echo "Project version: $PROJECT_VERSION"
+        if [ "$TAG_VERSION" != "$PROJECT_VERSION" ]; then
+          echo "::error::Tag $GITHUB_REF_NAME does not match <Version>$PROJECT_VERSION</Version> in the project file. Bump the version before tagging."
+          exit 1
+        fi
+
     # 2. 安装 .NET 8 SDK
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
